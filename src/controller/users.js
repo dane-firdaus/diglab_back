@@ -116,17 +116,6 @@ const listUserByHotelId = async(req, res, next) => {
 
 const getUserByEmail  = async(req, res, next) => {
     const email =  req.query.email;
-    if(
-        !req.headers.authorization ||
-        !req.headers.authorization.startsWith('Bearer') ||
-        !req.headers.authorization.split(' ')[1]
-        ){
-            res.status(401).json({
-                message:"authorization failed"
-            });
-        } else {
-            const token = req.headers.authorization.split(' ')[1];
-            const decodedId = jwt.verify(token, 'the-super-strong-secrect');
             try {
                 const [user] = await usersModel.checkUsersByEmail(email);
                 res.status(200).json({
@@ -139,7 +128,6 @@ const getUserByEmail  = async(req, res, next) => {
                     data : error.stack
                 })                
             }
-        }
 }
 
 module.exports = {
